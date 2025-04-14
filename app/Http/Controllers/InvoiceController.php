@@ -2,8 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Department;
 use App\Models\Invoice;
+use App\Models\InvoiceAttachments;
+use App\Models\InvoiceDetails;
+use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class InvoiceController extends Controller
 {
@@ -12,8 +18,8 @@ class InvoiceController extends Controller
      */
     public function index()
     {
-        return view('invoices.index');
-
+        $invoices = Invoice::all();
+        return view('invoices.index' ,compact('invoices'));
     }
 
     /**
@@ -21,16 +27,93 @@ class InvoiceController extends Controller
      */
     public function create()
     {
-        //
+        $departments = Department::all();
+        return view('invoices.create' ,compact('departments'));
     }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+
+        $validated = $request->validate([
+            'invoice_number'     => 'required|string|max:50|unique:invoices,invoice_number',
+            'invoice_Date'       => 'required|date',
+            'Due_date'           => 'required|date|after_or_equal:invoice_Date',
+            'product'            => 'required|string|max:100',
+            'department'         => 'required|exists:departments,id',
+            'Amount_collection'  => 'required|numeric|min:0',
+            'Amount_Commission'  => 'required|numeric|min:0',
+            'Discount'           => 'required|numeric|min:0',
+            'Value_VAT'          => 'required|numeric|min:0',
+            'Rate_VAT'           => 'required',
+            'Total'              => 'required|numeric|min:0',
+            'note'               => 'nullable|string|max:1000',
+            'pic'                => 'nullable|mimes:pdf,jpeg,jpg,png,webp|max:2048', // max 2MB
+        ]
+    ,
+[
+            'invoice_number.unique' => 'رقم الفاتورة موجود مسبقاً',
+            'invoice_number.required' => 'رقم الفاتورة مطلوب',
+            'invoice_Date.required' => 'تاريخ الفاتورة مطلوب',
+            'Due_date.required'     => 'تاريخ الاستحقاق مطلوب',
+            'product.required'      => 'اسم المنتج مطلوب',
+            'department.required'   => 'اسم القسم مطلوب',
+            'Amount_collection.required' => 'المبلغ المطلوب جمعه مطلوب',
+            'Amount_collection.numeric' => 'المبلغ المطلوب جمعه يجب أن يكون رقم',
+            'Amount_Commission.required' => 'المبلغ المطلوب كعمولة مطلوب',
+            'Amount_Commission.numeric' => 'المبلغ المطلوب كعمولة يجب أن يكون رقم',
+            'Discount.required'     => 'الخصم مطلوب',
+            'Value_VAT.required'    => 'قيمة ضريبة القيمة المضافة مطلوبة',
+            'Value_VAT.numeric'     => 'قيمة ضريبة القيمة المضافة يجب أن تكون رقم',
+            'Rate_VAT.required'     => 'نسبة ضريبة القيمة المضافة مطلوبة',
+            'Total.required'        => 'المجموع الكلي مطلوب',
+]);
+
+        $invoice = Invoice::create([
+            'invoice_number'     => $request->invoice_number,
+            'invoice_Date'       => $request->invoice_Date,
+            'Due_date'           => $request->Due_date,
+            'product'            => $request->product,
+            'department_id'      => $request->department,
+            'Amount_collection'  => $request->Amount_collection,
+            'Amount_Commission'  => $request->Amount_Commission,
+            'Discount'           => $request->Discount,
+            'Value_VAT'          => $request->Value_VAT,
+            'Rate_VAT'           => $request->Rate_VAT,
+            'Total'              => $request->Total,
+            'Status'             => 'غير مدفوعة',
+            'Value_Status'       => 2,
+            'note'               => $request->note,
+        ]);
+
+        InvoiceDetails::create([
+            'id_Invoice'      => $invoice->id,
+            'invoice_number'  => $request->invoice_number,
+            'product'         => $request->product,
+            'department'      => $request->department,
+            'Status'          => 'غير مدفوعة',
+            'Value_Status'    => 2,
+            'note'            => $request->note,
+            'user'            => Auth::user()->name,
+        ]);
+
+        if ($request->hasFile('pic')) {
+            $image = $request->file('pic');
+            $file_name = $image->getClientOriginalName();
+
+            $attachments = new InvoiceAttachments();
+            $attachments->file_name = $file_name;
+            $attachments->invoice_number = $request->invoice_number;
+            $attachments->Created_by = Auth::user()->name;
+            $attachments->invoice_id = $invoice->id;
+            $attachments->save();
+
+            // نقل الملف
+            $request->pic->move(public_path('Attachments/' . $request->invoice_number), $file_name);
+        }
+
+        session()->flash('Add', 'تم اضافة الفاتورة بنجاح');
+        return redirect()->route('invoices.index');
     }
+
 
     /**
      * Display the specified resource.
@@ -43,24 +126,153 @@ class InvoiceController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Invoice $invoice)
+    public function edit($id)
     {
-        //
+        $departments = Department::all();
+        $invoice = Invoice::findOrFail($id);
+        $attachments = InvoiceAttachments::where('invoice_id', $invoice->id)->get();
+        return view('invoices.edit' , compact('invoice', 'departments', 'attachments'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Invoice $invoice)
-    {
-        //
-    }
+
+        public function update(Request $request, $id)
+        {
+            $invoice = Invoice::findOrFail($id);
+
+            $validated = $request->validate([
+                'invoice_number'     => 'required|string|max:50|unique:invoices,invoice_number,' . $invoice->id,
+                'invoice_Date'       => 'required|date',
+                'Due_date'           => 'required|date|after_or_equal:invoice_Date',
+                'product'            => 'required|string|max:100',
+                'department'         => 'required|exists:departments,id',
+                'Amount_collection'  => 'required|numeric|min:0',
+                'Amount_Commission'  => 'required|numeric|min:0',
+                'Discount'           => 'required|numeric|min:0',
+                'Value_VAT'          => 'required|numeric|min:0',
+                'Rate_VAT'           => 'required',
+                'Total'              => 'required|numeric|min:0',
+                'note'               => 'nullable|string|max:1000',
+                'pic'                => 'nullable|mimes:pdf,jpeg,jpg,png,webp|max:2048', // max 2MB
+            ]
+        ,
+    [
+                'invoice_number.unique' => 'رقم الفاتورة موجود مسبقاً',
+                'invoice_number.required' => 'رقم الفاتورة مطلوب',
+                'invoice_Date.required' => 'تاريخ الفاتورة مطلوب',
+                'Due_date.required'     => 'تاريخ الاستحقاق مطلوب',
+                'product.required'      => 'اسم المنتج مطلوب',
+                'department.required'   => 'اسم القسم مطلوب',
+                'Amount_collection.required' => 'المبلغ المطلوب جمعه مطلوب',
+                'Amount_collection.numeric' => 'المبلغ المطلوب جمعه يجب أن يكون رقم',
+                'Amount_Commission.required' => 'المبلغ المطلوب كعمولة مطلوب',
+                'Amount_Commission.numeric' => 'المبلغ المطلوب كعمولة يجب أن يكون رقم',
+                'Discount.required'     => 'الخصم مطلوب',
+                'Value_VAT.required'    => 'قيمة ضريبة القيمة المضافة مطلوبة',
+                'Value_VAT.numeric'     => 'قيمة ضريبة القيمة المضافة يجب أن تكون رقم',
+                'Rate_VAT.required'     => 'نسبة ضريبة القيمة المضافة مطلوبة',
+                'Total.required'        => 'المجموع الكلي مطلوب',
+    ]);
+            $invoice->update([
+                'invoice_number' => $request->invoice_number,
+                'invoice_Date' => $request->invoice_Date,
+                'Due_date' => $request->Due_date,
+                'department_id' => $request->department,
+                'product' => $request->product,
+                'Amount_collection' => $request->Amount_collection,
+                'Amount_Commission' => $request->Amount_Commission,
+                'Discount' => $request->Discount,
+                'Rate_VAT' => $request->Rate_VAT,
+                'Value_VAT' => $request->Value_VAT,
+                'Total' => $request->Total,
+                'note' => $request->note,
+            ]);
+
+        session()->flash('Update', 'تم تحديث الفاتورة بنجاح');
+        return redirect()->route('invoices.index');
+
+   }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Invoice $invoice)
+    public function destroy(Request $request)
     {
-        //
+        $id = $request->id;
+
+        $id = Invoice::find($id);
+        if ($id) {
+            $id->delete();
+            session()->flash('Delete', 'تم حذف الفاتورة بنجاح');
+        } else {
+            session()->flash('Error', 'حدث خطآ ما ');
+        }
+        return redirect()->route('invoices.index');
+    }
+
+
+
+    public function getproducts($id)
+    {
+        $products = DB::table("products")->where("department_id", $id)->pluck("Product_name", "id");
+        return json_encode($products);
+    }
+
+
+    public function status_show($id)
+    {
+        $departments = Department::all();
+        $invoice = Invoice::findOrFail($id);
+        return view('invoices.status_show', compact('invoice' , 'departments'));
+    }
+
+    public function status_Update($id, Request $request)
+    {
+        $invoices = Invoice::findOrFail($id);
+
+        if ($request->Status === 'مدفوعة') {
+
+            $invoices->update([
+                'Value_Status' => 1,
+                'Status' => $request->Status,
+                'Payment_Date' => now(),
+            ]);
+
+            InvoiceDetails::create([
+                'id_Invoice' => $request->invoice_id,
+                'invoice_number' => $request->invoice_number,
+                'product' => $request->product,
+                'department' => $request->department,
+                'Status' => $request->Status,
+                'Value_Status' => 1,
+                'note' => $request->note,
+                'Payment_Date' => now(),
+                'user' => (Auth::user()->name),
+            ]);
+        }
+
+        else {
+            $invoices->update([
+                'Value_Status' => 3,
+                'Status' => $request->Status,
+                'Payment_Date' => $request->Payment_Date,
+            ]);
+            InvoiceDetails::create([
+                'id_Invoice' => $request->invoice_id,
+                'invoice_number' => $request->invoice_number,
+                'product' => $request->product,
+                'department' => $request->department,
+                'Status' => $request->Status,
+                'Value_Status' => 3,
+                'note' => $request->note,
+                'Payment_Date' => $request->Payment_Date,
+                'user' => (Auth::user()->name),
+            ]);
+        }
+        session()->flash('Status_Update');
+        return redirect('/invoices');
+
     }
 }

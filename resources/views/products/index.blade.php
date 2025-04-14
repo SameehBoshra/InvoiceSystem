@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('title')
-الأقسام
+المنتجات
 @stop
 @section('css')
 <!-- Internal Data table css -->
@@ -16,7 +16,7 @@
 				<div class="breadcrumb-header justify-content-between">
 					<div class="my-auto">
 						<div class="d-flex">
-							<h4 class="content-title mb-0 my-auto">اﻷعدادات</h4><span class="text-muted mt-1 tx-13 mr-2 mb-0">/ الأقسام</span>
+							<h4 class="content-title mb-0 my-auto">اﻷعدادات</h4><span class="text-muted mt-1 tx-13 mr-2 mb-0">/ المنتجات</span>
 						</div>
 					</div>
 
@@ -35,21 +35,25 @@
         </ul>
     </div>
 @endif
-@extends('layouts.notify')
 
+
+@extends('layouts.notify')
 
 
                     <div class="col-xl-12">
                         <div class="card mg-b-20">
                             <div class="card-header pb-0">
                                 <div class="d-flex justify-content-between">
-                                    <h4 class="card-title mg-b-0">اﻷقسام</h4>
+                                    <h4 class="card-title mg-b-0">المنتجات</h4>
                                     <i class="mdi mdi-dots-horizontal text-gray"></i>
                                 </div>
                             </div>
-                            <!-- Add department -->
+                            <!-- Add product -->
                             <div class="col-sm-6 col-md-4 col-xl-3 mg-t-20">
-                                <a class="modal-effect btn btn-outline-primary btn-block" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modaldemo8">أضافة قسم جديد</a>
+                                <a class="modal-effect btn btn-outline-primary btn-block"
+                                 data-effect="effect-flip-horizontal"
+                                 data-toggle="modal" href="#modaldemo8"
+                                 >أضافة منتج جديد</a>
                             </div>
 
                             <div class="card-body">
@@ -58,28 +62,32 @@
                                         <thead>
                                             <tr>
                                                 <th class="border-bottom-0">#</th>
+                                                <th class="border-bottom-0"> أسم المنتج </th>
                                                 <th class="border-bottom-0"> أسم القسم </th>
-                                                <th class="border-bottom-0"> الوصف</th>
+                                                <th class="border-bottom-0"> ملاحظات</th>
                                                 <th class="border-bottom-0"> اﻷجراءات</th>
 
                                             </tr>
                                         </thead>
                                         <tbody>
-                                                    @foreach ($departments as $department)
+                                                    @foreach ($products as $product)
                                                     <tr>
 
-                                                    <td>{{ $department->id }}</td>
-                                                    <td>{{ $department->department_name }}</td>
-                                                    <td>{{ $department->description }}</td>
+                                                    <td>{{ $product->id }}</td>
+                                                    <td>{{ $product->product_name }}</td>
+                                                    <td>{{ $product->department->department_name }}</td>
+                                                    <td>{{ $product->note }}</td>
                                                     <td>
                                                         <a class="btn btn-outline-success btn-sm
                                                         modal-effect btn btn-outline-primary"
                                                         data-effect="effect-flip-horizontal"
                                                         data-toggle="modal"
                                                         href="#modalEdit"
-                                                        data-id="{{ $department->id }}"
-                                                        data-department_name="{{ $department->department_name }}"
-                                                        data-description="{{ $department->description }}">
+                                                        data-id="{{ $product->id }}"
+                                                        data-product_name="{{ $product->product_name }}"
+                                                        data-note="{{ $product->note }}"
+                                                        data-department_id="{{ $product->department_id }}"
+                                                        >
                                                          <i class="las la-pen"></i>
                                                      </a>
 
@@ -88,8 +96,8 @@
                                                         data-effect="effect-flip-horizontal"
                                                         data-toggle="modal"
                                                         href="#modalDelete"
-                                                        data-id={{$department->id}}
-                                                        data-department_name={{$department->department_name}}
+                                                        data-id={{$product->id}}
+                                                        data-product_name={{$product->product_name}}
                                                         >
                                                         <li class="las la-trash"></li>
                                                     </a>
@@ -119,23 +127,29 @@
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content modal-content-demo">
                         <div class="modal-header">
-                            <h1 class="modal-title"> أضافة قسم
+                            <h1 class="modal-title">  أضافة منتج جديد
                         </h1><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
                         </div>
                         <div class="modal-body">
                                 <div class="card">
                                     <div class="card-body">
-                                        <form class="" action="{{route('departments.store')}}" method="POST">
+                                        <form class="" action="{{route('products.store')}}" method="POST">
                                                   @csrf
                                                     <div class="form-group has-success mg-b-0">
-                                                            <label>أسم القسم</label>
-                                                            <input class="form-control" placeholder=""  type="text" value="" name='department_name'>
-                                                            @error('department_name')
+                                                            <label>أسم المنتج</label>
+                                                            <input class="form-control" placeholder=""  type="text" value="" name='product_name'>
+                                                            @error('product_name')
                                                             <span class="text-danger">{{ $message }}</span>
                                                         @enderror
-                                                        <label>الوصف </label>
-                                                        <textarea class="form-control mg-t-20" placeholder=""  rows="3" name="description"></textarea>
-                                                        @error('description')
+                                                        <label>أسم القسم</label>
+                                                        <select class="form-control" name="department_id">
+                                                            <option label="اختر القسم"></option>
+                                                            @foreach ($departments as $department)
+                                                                <option value="{{ $department->id }}">{{ $department->department_name }}</option>
+                                                            @endforeach
+                                                        <label>ملاحظات </label>
+                                                        <textarea class="form-control mg-t-20" placeholder=""  rows="3" name="note"></textarea>
+                                                        @error('note')
                                                         <span class="text-danger">{{ $message }}</span>
                                                     @enderror
                                                         <div class="modal-footer">
@@ -158,25 +172,33 @@
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content modal-content-demo">
                         <div class="modal-header">
-                            <h1 class="modal-title"> تعديل القسم
+                            <h1 class="modal-title"> تعديل المنتج
                         </h1><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
                         </div>
                         <div class="modal-body">
                                 <div class="card">
                                     <div class="card-body">
-                                        <form class="" action="departments/update" method="POST">
+                                        <form class="" action="products/update" method="POST">
                                                   @csrf
                                                   @method('PATCH')
                                                     <div class="form-group has-success mg-b-0">
                                                         <input hidden name="id" id="id" value="">
-                                                            <label>أسم القسم</label>
-                                                            <input class="form-control" id="department_name" placeholder=""  type="text" value="" name='department_name'>
-                                                            @error('department_name')
+                                                        <input class="form-control" type="text" id="department_name" readonly hidden>
+
+                                                            <label>أسم المنتج</label>
+                                                            <input class="form-control" id="product_name" placeholder=""  type="text" value="" name='product_name'>
+                                                            @error('product_name')
                                                             <span class="text-danger">{{ $message }}</span>
                                                         @enderror
-                                                        <label>الوصف </label>
-                                                        <textarea class="form-control mg-t-20" id="description" placeholder=""  rows="3" name="description"></textarea>
-                                                        @error('description')
+                                                        <label>أسم القسم</label>
+                                                        <select class="form-control" id="department_id" name="department_id">
+                                                            <option label="اختر القسم"></option>
+                                                            @foreach ($departments as $department)
+                                                                <option value="{{ $department->id }}" >{{ $department->department_name }}</option>
+                                                            @endforeach
+                                                        <label>ملاحظات</label>
+                                                        <textarea class="form-control mg-t-20" id="note" placeholder=""  rows="2" name="note"></textarea>
+                                                        @error('note')
                                                         <span class="text-danger">{{ $message }}</span>
                                                     @enderror
                                                         <div class="modal-footer">
@@ -200,20 +222,21 @@
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content modal-content-demo">
                         <div class="modal-header">
-                            <h6 class="modal-title">حذف القسم</h6>
+                            <h6 class="modal-title">حذف المنتج</h6>
                             <button aria-label="Close" class="close" data-dismiss="modal" type="button">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
 
-                        <form action="departments/destory" method="POST">
+                        <form action="products/destory" method="POST">
                            @csrf
                            @method('DELETE')
 
                             <div class="modal-body">
                                 <p>هل انت متأكد من عملية الحذف ؟</p><br>
                                 <input type="hidden" name="id" id="id" value="">
-                                <input class="form-control" name="department_name" id="department_name" type="text" readonly>
+                                <input class="form-control" name="product_name" id="product_name" type="text" readonly>
+
                             </div>
 
                             <div class="modal-footer">
@@ -259,25 +282,25 @@
     $('#modalEdit').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget) // Button that triggered the modal
         var id = button.data('id') // Extract info from data-* attributes
-        var department_name = button.data('department_name')
-        var description = button.data('description')
-        // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-        // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other
-        // library if you wanted to.
+        var product_name = button.data('product_name')
+        var note = button.data('note')
+        var department_id = button.data('department_id')
         var modal = $(this)
         modal.find('.modal-body #id').val(id);
-        modal.find('.modal-body #department_name').val(department_name);
-        modal.find('.modal-body #description').val(description);
+        modal.find('.modal-body #product_name').val(product_name);
+        modal.find('.modal-body #note').val(note);
+        modal.find('.modal-body #department_id').val(department_id);
+
     })
 
     $('#modalDelete').on('show.bs.modal' ,function(event)
 {
     var button = $(event.relatedTarget) // Button that triggered the modal
     var id = button.data('id') // Extract info from data-* attributes
-    var department_name = button.data('department_name')
+    var product_name = button.data('product_name')
     var modal = $(this)
     modal.find('.modal-body #id').val(id);
-    modal.find('.modal-body #department_name').val(department_name);
+    modal.find('.modal-body #product_name').val(product_name);
 })
 </script>
 

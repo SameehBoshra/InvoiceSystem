@@ -1,7 +1,7 @@
 @extends('layouts.master2')
 
 @section('title')
-تسجيل دخول
+تسجيل الدخول - مورا سوفت للادارة القانونية
 @stop
 
 
@@ -39,8 +39,8 @@
 													</div>
 
 												 <div class="form-group">
-											 	 <label>كلمة المرور</label>
-
+											 	 <label>كلمة المرور</label> 
+                                                
                                                   <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
 
                                                   @error('password')
@@ -63,6 +63,9 @@
                                                     <button type="submit" class="btn btn-main-primary btn-block">
                                                     {{ __('تسجيل الدخول') }}
                                                     </button>
+                                                    <div class="mt-3 text-center">
+                                                        <p>ليس لديك حساب؟ <a href="{{ route('register') }}">إنشاء حساب جديد</a></p>
+                                                    </div>
 												</form>
 											</div>
 										</div>
