@@ -34,6 +34,21 @@ Route::resource('attachments', InvoiceAttachmentsController::class)->middleware(
 Route::get('InvoiceDetails/{id}', [InvoiceDetailsController::class,'index'])->middleware('auth');
 Route::get('status_show/{id}', [InvoiceController::class,'status_show'])->middleware('auth')->name('Status_show');
 Route::post('status_Update/{id}', [InvoiceController::class,'status_Update'])->middleware('auth')->name('status_Update');
+Route::get('invoicesPaid', [InvoiceController::class,'invoicesPaid'])->middleware('auth')->name('invoicesPaid');
+Route::get('invoicesUnPaid', [InvoiceController::class,'invoicesUnPaid'])->middleware('auth')->name('invoicesUnPaid');
+Route::get('invoicesPartial', [InvoiceController::class,'invoicesPartial'])->middleware('auth')->name('invoicesPartial');
+Route::get('invoicesDeleted', [InvoiceController::class,'invoicesDeleted'])->middleware('auth')->name('invoicesDeleted');
+Route::post('restorArchive', [InvoiceController::class,'restorArchive'])->middleware('auth')->name('restorArchive');
+Route::get('Print_invoice/{id}' ,[InvoiceController::class ,'print'])->name('print.invocice')->middleware('auth');
+
+Route::get('export_invoices' ,[InvoiceController::class , 'export'])->name('exportInvoices')->middleware('auth');
+
+
+
+
+
+
+
 
 
 Route::get('/{page}', [AdminController::class, 'index']);

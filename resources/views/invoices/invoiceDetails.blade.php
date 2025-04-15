@@ -20,24 +20,8 @@
 				<!-- row -->
 				<div class="row">
 					<div class="col-lg-12 col-md-12">
-                        @if (session()->has('Add'))
+                        @extends('alerts.notifyInvoiceDetails')
 
-                        <div class="alert alert-success alert-dismissible fade show w-100" role="alert">
-                            {{ session()->get('Add') }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                    @endif
-
-                    @if (session()->has('Error'))
-                        <div class="alert alert-danger alert-dismissible fade show w-100" role="alert">
-                            {{ session()->get('Error') }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                    @endif
 						<div class="card" id="basic-alert">
 							<div class="card-body">
 								<div>

@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('title')
-قائمةالفواتير
+قائمةاﻷرشيف
 @stop
 @section('css')
 <!-- Internal Data table css -->
@@ -16,7 +16,7 @@
 				<div class="breadcrumb-header justify-content-between">
 					<div class="my-auto">
 						<div class="d-flex">
-							<h4 class="content-title mb-0 my-auto"> الفواتير</h4><span class="text-muted mt-1 tx-13 mr-2 mb-0">قائمةالفواتير</span>
+							<h4 class="content-title mb-0 my-auto"> الفواتير</h4><span class="text-muted mt-1 tx-13 mr-2 mb-0">قائمةاﻷرشيف</span>
 						</div>
 					</div>
 
@@ -40,18 +40,16 @@
         <div class="card mg-b-20">
             <div class="card-header pb-0">
                 <div class="d-flex justify-content-between">
-                    <h4 class="card-title mg-b-0">الفواتير</h4>
+                    <h4 class="card-title mg-b-0">قائمةاﻷرشيف</h4>
                     <i class="mdi mdi-dots-horizontal text-gray"></i>
                 </div>
             </div>
             <div class="card-body">
-                <div>
+              {{--   <div>
                     <a href="invoices/create" class="btn btn-primary">
                         <i class="fas fa-plus"></i> فاتورة جديدة
                     </a>
-                    <a class="modal-effect btn btn-sm btn-primary" href="{{ route('exportInvoices') }}"
-                    style="color:white"><i class="fas fa-file-download"></i>&nbsp;تصدير اكسيل</a>
-                </div>
+                </div> --}}
                 <hr>
                 <div class="table-responsive">
                     <table id="example1" class="table key-buttons text-md-nowrap">
@@ -136,8 +134,9 @@
                                              data-id="{{ $invoice->id }}"
                                                 data-invoice_number="{{ $invoice->invoice_number }}"
                                                 data-toggle="modal"><i
-                                                    class="text-warning fas fa-exchange-alt"></i>&nbsp;&nbsp;نقل الي
-                                                الارشيف</a>
+                                                    class="text-warning fas fa-exchange-alt"></i>&nbsp;&nbsp;
+                                                إلغاء اﻷرشفة
+                                                </a>
 
                                             <a class="dropdown-item" href="Print_invoice/{{ $invoice->id }}"><i
                                                     class="text-success fas fa-print"></i>&nbsp;&nbsp;طباعة
@@ -192,18 +191,17 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content modal-content-demo">
                     <div class="modal-header">
-                        <h6 class="modal-title">نقل الفاتورة إلي اﻷرشيف</h6>
+                        <h6 class="modal-title">  إلغاء أرشفة الفاتورة </h6>
                         <button aria-label="Close" class="close" data-dismiss="modal" type="button">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
 
-                    <form action="invoices/destory" method="POST">
+                    <form action="{{route('restorArchive')}}" method="POST">
                        @csrf
-                       @method('DELETE')
 
                         <div class="modal-body">
-                            <p>هل انت متأكد من عملية اﻷرشفة ؟</p><br>
+                            <p>هل انت متأكد من عملية إلغاء اﻷرشفة ؟</p><br>
                             <input type="hidden" name="id" id="id" value="">
                             <input class="form-control" name="invoice_number" id="invoice_number" type="text" readonly>
                         </div>

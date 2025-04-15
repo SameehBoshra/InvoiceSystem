@@ -2,14 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\InvoicesExport;
 use App\Models\Department;
 use App\Models\Invoice;
 use App\Models\InvoiceAttachments;
 use App\Models\InvoiceDetails;
 use App\Models\Product;
+use App\Models\User;
+use App\Notifications\AddInvoice;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 class InvoiceController extends Controller
 {
@@ -109,6 +114,9 @@ class InvoiceController extends Controller
             // نقل الملف
             $request->pic->move(public_path('Attachments/' . $request->invoice_number), $file_name);
         }
+
+        $user=User::first();
+        Notification::send($user ,new AddInvoice($invoice->id));
 
         session()->flash('Add', 'تم اضافة الفاتورة بنجاح');
         return redirect()->route('invoices.index');
@@ -274,5 +282,45 @@ class InvoiceController extends Controller
         session()->flash('Status_Update');
         return redirect('/invoices');
 
+    }
+
+    public function invoicesPaid()
+    {
+        $invoices = Invoice::where('Value_Status', 1)->get();
+        return view('invoices.invoicesPaid', compact('invoices'));
+    }
+    public function invoicesUnPaid()
+    {
+        $invoices = Invoice::where('Value_Status', 2)->get();
+        return view('invoices.invoicesUnPaid', compact('invoices'));
+    }
+    public function invoicesPartial()
+    {
+        $invoices = Invoice::where('Value_Status', 3)->get();
+        return view('invoices.invoicesPartial', compact('invoices'));
+    }
+    public function invoicesDeleted()
+    {
+        $invoices = Invoice::onlyTrashed()->get();
+        return view('invoices.invoicesDeleted', compact('invoices'));
+    }
+    public function restorArchive(Request $request)
+    {
+        $id = $request->id;
+        $invoice = Invoice::withTrashed()->where('id',$id)->restore();
+        session()->flash('restorArchive');
+        return redirect()->route('invoices.index');
+    }
+
+    public function print($id)
+    {
+        $invoices=Invoice::find($id);
+        return view('invoices.printInvoice' ,compact('invoices'));
+
+    }
+
+    public function export()
+    {
+        return Excel::download(new InvoicesExport, 'invoices.xlsx');
     }
 }

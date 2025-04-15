@@ -65,11 +65,11 @@ class InvoiceAttachmentsController extends Controller
 
         if ($attach) {
             $attach->delete();
-            session()->flash('Add', 'تم حذف الملحق بنجاح');
+            session()->flash('Delete');
             return redirect()->back();
         } else {
             return redirect()->back();
-            session()->flash('Error', 'حدث خطآ ما ');
+            session()->flash('Error');
         }
 
     }

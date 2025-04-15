@@ -35,7 +35,7 @@
         </ul>
     </div>
 @endif
-@extends('layouts.notify')
+@extends('alerts.notifyDepartment')
 
 
 

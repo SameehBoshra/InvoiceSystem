@@ -37,7 +37,7 @@
 @endif
 
 
-@extends('layouts.notify')
+@extends('alerts.notifyProduct')
 
 
                     <div class="col-xl-12">
