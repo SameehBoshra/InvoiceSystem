@@ -35,7 +35,7 @@ Route::resource('departments', DepartmentController::class)->middleware('auth')-
 Route::get('/department/{id}', [InvoiceController::class , 'getProducts'])->name('department.products')->middleware('permission:عرض الاقسام');
 Route::resource('products', ProductController::class)->middleware('auth')->middleware('permission:عرض المنتجات');
 Route::resource('attachments', InvoiceAttachmentsController::class)->middleware('auth')->middleware('permission:اضافة مرفق');
-Route::get('InvoiceDetails/{id}', [InvoiceDetailsController::class,'index'])->middleware('auth')->middleware('permission:عرض الفواتير');
+Route::get('InvoiceDetails/{id}', [InvoiceDetailsController::class,'index'])->middleware('auth')->middleware('permission:الفواتير');
 Route::get('status_show/{id}', [InvoiceController::class,'status_show'])->middleware('auth')->name('Status_show')->middleware('permission:تغير حالة الدفع');
 Route::post('status_Update/{id}', [InvoiceController::class,'status_Update'])->middleware('auth')->name('status_Update')->middleware('permission:تغير حالة الدفع');
 Route::get('invoicesPaid', [InvoiceController::class,'invoicesPaid'])->middleware('auth')->name('invoicesPaid')->middleware('permission:الفواتير المدفوعة');

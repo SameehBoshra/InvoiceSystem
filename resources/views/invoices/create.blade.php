@@ -37,7 +37,7 @@
             </button>
         </div>
     @endif
-
+    @can('اضافة فاتورة')
     <!-- row -->
     <div class="row">
 
@@ -203,6 +203,7 @@
             </div>
         </div>
     </div>
+    @endcan
 
     </div>
 

@@ -45,7 +45,7 @@
                 </div>
             </div>
             <div class="card-body">
-                @can('اضافةفاتورة')
+                @can('اضافة فاتورة')
                 <div>
                     <a href="invoices/create" class="btn btn-primary">
                         <i class="fas fa-plus"></i> فاتورة جديدة

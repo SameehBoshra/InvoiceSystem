@@ -18,7 +18,7 @@ class CreateAdmainUserSeeder extends Seeder
         $user = User::create([
             'name' => 'Sameeh Boshra',
             'email' => 'sameehb65@gmail.com',
-            'password' => bcrypt('password'),
+            'password' => bcrypt('PasswordMo7a'),
             'roles_name' => ["owner"],
             'Status' => 'مفعل',
             ]);

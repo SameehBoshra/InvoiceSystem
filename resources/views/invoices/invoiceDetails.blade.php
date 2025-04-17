@@ -151,7 +151,7 @@
                                                                                 <td>{{ $detail->note ?? 'لا توجد ملاحظات' }}</td>
                                                                             </tr>
                                                                             <tr>
-                                                                                <th>المستخدم</th>
+                                                                                <th>تمت الإضافة بواسطة </th>
                                                                                 <td>{{ $detail->user }}</td>
                                                                             </tr>
                                                                             <tr>
@@ -169,7 +169,6 @@
                                                     </div>
                                                     <!-- end invoice details -->
                                                     <!-- attachments -->
-                                                    @can('اضافة مرفق')
 													<div class="tab-pane" id="tab3">
                                                         <div class="container mt-5">
                                                             <h4 class="mb-4"> الملحقات</h4>
@@ -187,7 +186,7 @@
                                                                         </tr>
 
                                                                         <tr>
-                                                                            <th>أضيف بواسطة</th>
+                                                                            <th> تمت الإضافة بواسطة</th>
                                                                             <td>{{ $attachment->Created_by }}</td>
                                                                         </tr>
                                                                         <tr>
@@ -231,7 +230,6 @@
                                                         </div>
 
                                                     </div>
-                                                    @endcan
                                                     <!-- end attachments -->
 												</div>
 											</div>

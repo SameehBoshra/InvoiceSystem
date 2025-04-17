@@ -3,6 +3,14 @@
 فواتير
 @stop
 @section('css')
+<link href="{{URL::asset('assets/plugins/datatable/css/dataTables.bootstrap4.min.css')}}" rel="stylesheet" />
+<link href="{{URL::asset('assets/plugins/datatable/css/buttons.bootstrap4.min.css')}}" rel="stylesheet">
+<link href="{{URL::asset('assets/plugins/datatable/css/responsive.bootstrap4.min.css')}}" rel="stylesheet" />
+<link href="{{URL::asset('assets/plugins/datatable/css/jquery.dataTables.min.css')}}" rel="stylesheet">
+<link href="{{URL::asset('assets/plugins/datatable/css/responsive.dataTables.min.css')}}" rel="stylesheet">
+<link href="{{URL::asset('assets/plugins/select2/css/select2.min.css')}}" rel="stylesheet">
+    <!--Internal   Notify -->
+    <link href="{{ URL::asset('assets/plugins/notify/css/notifIt.css') }}" rel="stylesheet" />
 <!--  Owl-carousel css-->
 <link href="{{URL::asset('assets/plugins/owl-carousel/owl.carousel.css')}}" rel="stylesheet" />
 <!-- Maps css -->
@@ -10,32 +18,7 @@
 @endsection
 @section('page-header')
 <br>
-				<!-- breadcrumb -->
-			{{-- 	<div class="breadcrumb-header justify-content-between">
-					<div class="left-content">
-						<div>
-						  <h2 class="main-content-title tx-24 mg-b-1 mg-b-lg-1">Hi, welcome back!</h2>
-						  <p class="mg-b-0">Sales monitoring dashboard template.</p>
-						</div>
-					</div>
-					<div class="main-dashboard-header-right">
-						<div>
-							<label class="tx-13">Customer Ratings</label>
-							<div class="main-star">
-								<i class="typcn typcn-star active"></i> <i class="typcn typcn-star active"></i> <i class="typcn typcn-star active"></i> <i class="typcn typcn-star active"></i> <i class="typcn typcn-star"></i> <span>(14,873)</span>
-							</div>
-						</div>
-						<div>
-							<label class="tx-13">Online Sales</label>
-							<h5>563,275</h5>
-						</div>
-						<div>
-							<label class="tx-13">Offline Sales</label>
-							<h5>783,675</h5>
-						</div>
-					</div>
-				</div> --}}
-				<!-- /breadcrumb -->
+
 @endsection
 @section('content')
 				<!-- row -->
@@ -187,35 +170,70 @@
 
 				<!-- row opened -->
 				<div class="row row-sm">
-			{{-- 		<div class="col-md-12 col-lg-12 col-xl-7">
-						<div class="card">
-							<div class="card-header bg-transparent pd-b-0 pd-t-20 bd-b-0">
-								<div class="d-flex justify-content-between">
-									<h4 class="card-title mb-0">Order status</h4>
-									<i class="mdi mdi-dots-horizontal text-gray"></i>
-								</div>
-								<p class="tx-12 text-muted mb-0">Order Status and Tracking. Track your order from ship date to arrival. To begin, enter your order number.</p>
-							</div>
-							<div class="card-body">
-								<div class="total-revenue">
-									<div>
-									  <h4>120,750</h4>
-									  <label><span class="bg-primary"></span>success</label>
-									</div>
-									<div>
-									  <h4>56,108</h4>
-									  <label><span class="bg-danger"></span>Pending</label>
-									</div>
-									<div>
-									  <h4>32,895</h4>
-									  <label><span class="bg-warning"></span>Failed</label>
-									</div>
-								  </div>
-								<div id="bar" class="sales-bar mt-4"></div>
-							</div>
-						</div>
-					</div> --}}
-					<div class="col-lg-12 col-xl-5">
+                    @can('المستخدمين')
+                    <div class="col-xl-12 col-sm-12 col-md-6">
+                        <div class="card mg-b-20">
+                            <div class="card-header pb-0">
+                                <div class="d-flex justify-content-between">
+                                    <h4 class="card-title mg-b-0">المستخدمين</h4>
+                                    <i class="mdi mdi-dots-horizontal text-gray"></i>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table id="example1" class="table key-buttons text-md-nowrap">
+                                        <thead>
+                                            <tr>
+                                                <th class="border-bottom-0">#</th>
+                                                <th class="border-bottom-0"> أسم المستخدم </th>
+                                                <th class="border-bottom-0"> الحالة</th>
+                                                <th class="border-bottom-0"> الصلاحية</th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @php
+                                            $users=\App\Models\User::get();
+                                            @endphp
+                                                    @foreach ($users as $user)
+                                                    <tr>
+                                                        <td>{{ $user->id }}</td>
+                                                        <td>{{ $user->name }}</td>
+                                                        <td>
+                                                            @if ($user->Status == 'مفعل')
+                                                            <span class="label text-success d-flex">
+                                                                <div class="dot-label bg-success ml-1"></div>{{ $user->Status }}
+                                                            </span>
+                                                        @else
+                                                            <span class="label text-danger d-flex">
+                                                                <div class="dot-label bg-danger ml-1"></div>{{ $user->Status }}
+                                                            </span>
+                                                        @endif
+                                                        </td>
+
+                                                        <td>
+                                                            @if(!empty($user->getRoleNames()))
+                                                                @foreach($user->getRoleNames() as $role)
+                                                                    <span class="badge bg-success">{{ $role }}</span>
+                                                                @endforeach
+                                                            @else
+                                                                <span class="text-muted">لا يوجد صلاحيات</span>
+                                                            @endif
+                                                        </td>
+                                                </tr>
+
+                                                  @endforeach
+
+
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @endcan
+					<div class="col-xl-12 col-sm-12 col-md-6">
 						<div class="card card-dashboard-map-one">
 						 <div class="col-md-12">
                                 <h2 style="justify-content: center">فواتير</h2>
@@ -241,7 +259,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="d-flex" style="width: 75%"  >
+                                        <div class="d-flex" style=""  >
 
                                             @php
                                                 $countPaid= \App\Models\Invoice::where('Status','مدفوعة')->count();
@@ -292,4 +310,32 @@
 <!-- Internal Jquery-sparkline js -->
 <script src="{{URL::asset('assets/plugins/jquery-sparkline/jquery.sparkline.min.js')}}"></script>
 <script src="{{URL::asset('assets/js/chart.sparkline.js')}}"></script>
+<!-- Internal Data tables -->
+<script src="{{URL::asset('assets/plugins/datatable/js/jquery.dataTables.min.js')}}"></script>
+<script src="{{URL::asset('assets/plugins/datatable/js/dataTables.dataTables.min.js')}}"></script>
+<script src="{{URL::asset('assets/plugins/datatable/js/dataTables.responsive.min.js')}}"></script>
+<script src="{{URL::asset('assets/plugins/datatable/js/responsive.dataTables.min.js')}}"></script>
+<script src="{{URL::asset('assets/plugins/datatable/js/jquery.dataTables.js')}}"></script>
+<script src="{{URL::asset('assets/plugins/datatable/js/dataTables.bootstrap4.js')}}"></script>
+<script src="{{URL::asset('assets/plugins/datatable/js/dataTables.buttons.min.js')}}"></script>
+<script src="{{URL::asset('assets/plugins/datatable/js/buttons.bootstrap4.min.js')}}"></script>
+<script src="{{URL::asset('assets/plugins/datatable/js/jszip.min.js')}}"></script>
+<script src="{{URL::asset('assets/plugins/datatable/js/pdfmake.min.js')}}"></script>
+<script src="{{URL::asset('assets/plugins/datatable/js/vfs_fonts.js')}}"></script>
+<script src="{{URL::asset('assets/plugins/datatable/js/buttons.html5.min.js')}}"></script>
+<script src="{{URL::asset('assets/plugins/datatable/js/buttons.print.min.js')}}"></script>
+<script src="{{URL::asset('assets/plugins/datatable/js/buttons.colVis.min.js')}}"></script>
+<script src="{{URL::asset('assets/plugins/datatable/js/dataTables.responsive.min.js')}}"></script>
+<script src="{{URL::asset('assets/plugins/datatable/js/responsive.bootstrap4.min.js')}}"></script>
+<!--Internal  Datatable js -->
+<script src="{{URL::asset('assets/js/table-data.js')}}"></script>
+<!--Internal  Datepicker js -->
+<script src="{{URL::asset('assets/plugins/jquery-ui/ui/widgets/datepicker.js')}}"></script>
+<!-- Internal Select2 js-->
+<script src="{{URL::asset('assets/plugins/select2/js/select2.min.js')}}"></script>
+<!-- Internal Modal js-->
+<script src="{{URL::asset('assets/js/modal.js')}}"></script>
+<!--Internal  Notify js -->
+<script src="{{ URL::asset('assets/plugins/notify/js/notifIt.js') }}"></script>
+<script src="{{ URL::asset('assets/plugins/notify/js/notifit-custom.js') }}"></script>
 @endsection

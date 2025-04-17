@@ -38,7 +38,7 @@ class ProductController extends Controller
         // Validate the request data
          $validatedData = $request->validate([
             'department_id' => 'required|exists:departments,id',
-            'product_name' => 'required|string|min:5|max:255|unique:departments,department_name',
+            'product_name' => 'required|string|min:5|max:255',
             'note' => 'nullable|string|min:5|max:255',]
             ,
             [
@@ -47,7 +47,6 @@ class ProductController extends Controller
                 'product_name.required' => 'اسم المنتج مطلوب',
                 'product_name.min' => 'اسم المنتج يجب ان يكون 5 احرف على الاقل',
                 'product_name.max' => 'اسم المنتج يجب ان لا يتجاوز 255 حرف',
-                'product_name.unique' => 'اسم المنتج موجود مسبقا',
                 'note.min' => 'وصف المنتج يجب ان يكون 5 احرف على الاقل',
                 'note.max' => 'وصف المنتج يجب ان لا يتجاوز 255 حرف',
 
@@ -79,7 +78,7 @@ class ProductController extends Controller
        // Validate the request data
        $validatedData = $request->validate([
         'department_id' => 'required|exists:departments,id',
-        'product_name' => 'required|string|min:5|max:255|unique:departments,department_name',
+        'product_name' => 'required|string|min:5|max:255',
         'note' => 'nullable|string|min:5|max:255',]
         ,
         [
@@ -88,7 +87,6 @@ class ProductController extends Controller
             'product_name.required' => 'اسم المنتج مطلوب',
             'product_name.min' => 'اسم المنتج يجب ان يكون 5 احرف على الاقل',
             'product_name.max' => 'اسم المنتج يجب ان لا يتجاوز 255 حرف',
-            'product_name.unique' => 'اسم المنتج موجود مسبقا',
             'note.min' => 'وصف المنتج يجب ان يكون 5 احرف على الاقل',
             'note.max' => 'وصف المنتج يجب ان لا يتجاوز 255 حرف',
 
