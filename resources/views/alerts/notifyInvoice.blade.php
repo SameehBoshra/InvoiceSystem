@@ -62,4 +62,38 @@ notif({
 </script>
 @endif
 
+@if (session()->has('export'))
+<script>
+window.onload = function() {
+notif({
+    msg: "تم  تصدير الفواتير بنجاح",
+    type: "success"
+})
+}
+</script>
+@endif
+
+@if (session()->has('notExport'))
+<script>
+window.onload = function() {
+notif({
+    msg: "لا توجد فواتير لتصديرها",
+    type: "error"
+})
+}
+</script>
+@endif
+
+
+@if (session()->has('Archive'))
+<script>
+window.onload = function() {
+notif({
+    msg: "تم أرشفة الفاتورة بنجاح",
+    type: "success"
+})
+}
+</script>
+@endif
+
 

@@ -1,6 +1,6 @@
 $(function() {
 	'use strict'
-	
+
 	/***************** LINE CHARTS *****************/
 	$('#sparkline1').sparkline('html', {
 		width: 200,
@@ -76,8 +76,8 @@ $(function() {
 	/**************** PIE CHART ****************/
 	$('#sparkline9').sparkline('html', {
 		type: 'pie',
-		width: 70,
-		height: 70,
+		width: 200,
+		height: 200,
 		sliceColors: ['#8500ff', '#285cf7', '#3bb001']
 	});
 	$('#sparkline10').sparkline('html', {

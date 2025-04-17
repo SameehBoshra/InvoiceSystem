@@ -169,6 +169,7 @@
                                                     </div>
                                                     <!-- end invoice details -->
                                                     <!-- attachments -->
+                                                    @can('اضافة مرفق')
 													<div class="tab-pane" id="tab3">
                                                         <div class="container mt-5">
                                                             <h4 class="mb-4"> الملحقات</h4>
@@ -202,14 +203,17 @@
                                                                             </td>
                                                                         </tr>
                                                                         <tr>
+                                                                            @can('تحميل مرفق')
                                                                             <th>تحميل الملف</th>
                                                                             <td>
                                                                                 <a href="{{ url('Attachments/' . $attachment->invoice_number . '/' . $attachment->file_name) }}" download class="btn btn-success btn-sm">
                                                                                     تحميل
                                                                                 </a>
                                                                             </td>
+                                                                            @endcan
                                                                         </tr>
                                                                         <tr>
+                                                                            @can('حذف مرفق')
                                                                             <th>حذف الملف</th>
                                                                             <td>
                                                                                 <form action="{{ route('attachments.destroy', $attachment->id) }}" method="POST">
@@ -218,6 +222,7 @@
                                                                                     <button type="submit" class="btn btn-danger btn-sm">حذف</button>
                                                                                 </form>
                                                                             </td>
+                                                                            @endcan
                                                                     </table>
                                                                 </div>
                                                             @empty
@@ -226,6 +231,7 @@
                                                         </div>
 
                                                     </div>
+                                                    @endcan
                                                     <!-- end attachments -->
 												</div>
 											</div>

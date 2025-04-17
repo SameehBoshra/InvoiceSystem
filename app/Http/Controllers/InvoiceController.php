@@ -10,6 +10,7 @@ use App\Models\InvoiceDetails;
 use App\Models\Product;
 use App\Models\User;
 use App\Notifications\AddInvoice;
+use App\Notifications\AddInvoiceNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Auth;
@@ -114,9 +115,16 @@ class InvoiceController extends Controller
             // نقل الملف
             $request->pic->move(public_path('Attachments/' . $request->invoice_number), $file_name);
         }
-
+// notify by email
         $user=User::first();
         Notification::send($user ,new AddInvoice($invoice->id));
+// notify by database when user add to admin
+        $userAdd=User::get();
+        // هات اخر id اضاف
+        $invoiceNewId=Invoice::latest()->first();
+
+        Notification::send($userAdd ,new AddInvoiceNotification($invoiceNewId));
+
 
         session()->flash('Add', 'تم اضافة الفاتورة بنجاح');
         return redirect()->route('invoices.index');
@@ -213,13 +221,27 @@ class InvoiceController extends Controller
         $id = Invoice::find($id);
         if ($id) {
             $id->delete();
-            session()->flash('Delete', 'تم حذف الفاتورة بنجاح');
+            session()->flash('Delete');
         } else {
-            session()->flash('Error', 'حدث خطآ ما ');
+            session()->flash('Error');
         }
         return redirect()->route('invoices.index');
     }
 
+    public function invoicesArchive(Request $request)
+    {
+
+        $id = $request->id;
+
+        $id = Invoice::find($id);
+        if ($id) {
+            $id->delete();
+            session()->flash('Archive');
+        } else {
+            session()->flash('Error');
+        }
+        return redirect()->route('invoices.index');
+    }
 
 
     public function getproducts($id)
@@ -321,6 +343,32 @@ class InvoiceController extends Controller
 
     public function export()
     {
-        return Excel::download(new InvoicesExport, 'invoices.xlsx');
+        $invoices = Invoice::all();
+        if(count($invoices) == 0){
+            session()->flash('notExport');
+            return redirect()->route('invoices.index');
+        }
+        else
+        {
+            Excel::download(new InvoicesExport, 'invoices.xlsx');
+
+            session()->flash('export');
+            return redirect()->route('invoices.index');
+
+        }
+
+
     }
+
+    public function MarkAsRead_all()
+    {
+       $userUnReadNotification=auth()->user()->unreadNotifications;
+
+       if($userUnReadNotification)
+       {
+        $userUnReadNotification->markAsRead();
+       }
+       return redirect()->back();
+    }
+
 }

@@ -162,78 +162,54 @@
 										<span class="avatar avatar-lg brround cover-image" data-image-src="{{URL::asset('assets/img/faces/12.jpg')}}"><span class="avatar-status bg-success"></span></span>
 									</div>
 									<div>
-										<strong>Madeleine</strong> Hey! there I' am available....
-										<div class="small text-muted">
-											3 hours ago
-										</div>
+                                        @can('الاشعارات')
+                                        <div class="dropdown nav-item main-header-notification">
+                                            <a class="new nav-link" href="#">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="header-icon-svgs" viewBox="0 0 24 24" fill="none"
+                                                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                    class="feather feather-bell">
+                                                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                                                    <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                                                </svg><span class=" pulse"></span></a>
+                                            <div class="dropdown-menu">
+                                                <div class="menu-header-content bg-primary text-right">
+                                                    <div class="d-flex">
+                                                        <h3 class="dropdown-title mb-1  text-white font-weight-semibold">الاشعارات</h3>
+                                                        <span class="badge badge-pill badge-warning tx-17 mr-auto my-auto float-left"><a
+                                                                href="\MarkAsRead_all">تعين قراءة الكل</a></span>
+                                                    </div>
+                                                    <p class="dropdown-title-text subtext mb-0 text-white op-6 pb-0  ">
+                                                    <h4 style="color: yellow" id="notifications_count">
+                                                        {{ auth()->user()->unreadNotifications->count() }}
+                                                    </h4>
+                                                    </p>
+                                                </div>
+                                                <div id="unreadNotifications">
+                                                    @foreach (auth()->user()->unreadNotifications as $notification)
+                                                        <div class="main-notification-list Notification-scroll">
+                                                            <a class="d-flex p-3 border-bottom"
+                                                                href="#">
+                                                                <div class="notifyimg bg-pink">
+                                                                    <i class="la la-file-alt text-white"></i>
+                                                                </div>
+                                                                <div class="mr-3">
+                                                                    <h5 class="notification-label mb-1">{{ $notification->data['title'] }}
+                                                                        {{ $notification->data['user'] }}
+                                                                    </h5>
+                                                                    <div class="notification-subtext">{{ $notification->created_at }}</div>
+                                                                </div>
+                                                            </a>
+                                                        </div>
+                                                    @endforeach
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    @endcan
 									</div>
 								</div>
-								<div class="list-group-item d-flex  align-items-center">
-									<div class="ml-3">
-										<span class="avatar avatar-lg brround cover-image" data-image-src="{{URL::asset('assets/img/faces/1.jpg')}}"></span>
-									</div>
-									<div>
-										<strong>Anthony</strong> New product Launching...
-										<div class="small text-muted">
-											5 hour ago
-										</div>
-									</div>
-								</div>
-								<div class="list-group-item d-flex  align-items-center">
-									<div class="ml-3">
-										<span class="avatar avatar-lg brround cover-image" data-image-src="{{URL::asset('assets/img/faces/2.jpg')}}"><span class="avatar-status bg-success"></span></span>
-									</div>
-									<div>
-										<strong>Olivia</strong> New Schedule Realease......
-										<div class="small text-muted">
-											45 mintues ago
-										</div>
-									</div>
-								</div>
-								<div class="list-group-item d-flex  align-items-center">
-									<div class="ml-3">
-										<span class="avatar avatar-lg brround cover-image" data-image-src="{{URL::asset('assets/img/faces/8.jpg')}}"><span class="avatar-status bg-success"></span></span>
-									</div>
-									<div>
-										<strong>Madeleine</strong> Hey! there I' am available....
-										<div class="small text-muted">
-											3 hours ago
-										</div>
-									</div>
-								</div>
-								<div class="list-group-item d-flex  align-items-center">
-									<div class="ml-3">
-										<span class="avatar avatar-lg brround cover-image" data-image-src="{{URL::asset('assets/img/faces/11.jpg')}}"></span>
-									</div>
-									<div>
-										<strong>Anthony</strong> New product Launching...
-										<div class="small text-muted">
-											5 hour ago
-										</div>
-									</div>
-								</div>
-								<div class="list-group-item d-flex  align-items-center">
-									<div class="ml-3">
-										<span class="avatar avatar-lg brround cover-image" data-image-src="{{URL::asset('assets/img/faces/6.jpg')}}"><span class="avatar-status bg-success"></span></span>
-									</div>
-									<div>
-										<strong>Olivia</strong> New Schedule Realease......
-										<div class="small text-muted">
-											45 mintues ago
-										</div>
-									</div>
-								</div>
-								<div class="list-group-item d-flex  align-items-center">
-									<div class="ml-3">
-										<span class="avatar avatar-lg brround cover-image" data-image-src="{{URL::asset('assets/img/faces/9.jpg')}}"><span class="avatar-status bg-success"></span></span>
-									</div>
-									<div>
-										<strong>Olivia</strong> Hey! there I' am available....
-										<div class="small text-muted">
-											12 mintues ago
-										</div>
-									</div>
-								</div>
+
 							</div>
 						</div>
 						<div class="tab-pane  " id="side3">

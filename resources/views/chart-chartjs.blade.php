@@ -1,3 +1,4 @@
+Using Gradient Color
 @extends('layouts.master')
 @section('css')
 @endsection

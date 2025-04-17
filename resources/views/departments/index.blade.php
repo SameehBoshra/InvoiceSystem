@@ -11,6 +11,7 @@
 <link href="{{URL::asset('assets/plugins/datatable/css/responsive.dataTables.min.css')}}" rel="stylesheet">
 <link href="{{URL::asset('assets/plugins/select2/css/select2.min.css')}}" rel="stylesheet">
 @endsection
+@can('عرض الاقسام')
 @section('page-header')
 				<!-- breadcrumb -->
 				<div class="breadcrumb-header justify-content-between">
@@ -24,21 +25,19 @@
 				<!-- breadcrumb -->
 @endsection
 @section('content')
-				<!-- row -->
-				<div class="row">
-                    @if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
+@if ($errors->any())
+<div class="alert alert-danger">
+    <ul>
+        @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+        @endforeach
+    </ul>
+</div>
 @endif
 @extends('alerts.notifyDepartment')
 
-
-
+				<!-- row -->
+				<div class="row">
                     <div class="col-xl-12">
                         <div class="card mg-b-20">
                             <div class="card-header pb-0">
@@ -48,9 +47,11 @@
                                 </div>
                             </div>
                             <!-- Add department -->
+                            @can('اضافة قسم')
                             <div class="col-sm-6 col-md-4 col-xl-3 mg-t-20">
                                 <a class="modal-effect btn btn-outline-primary btn-block" data-effect="effect-flip-horizontal" data-toggle="modal" href="#modaldemo8">أضافة قسم جديد</a>
                             </div>
+                            @endcan
 
                             <div class="card-body">
                                 <div class="table-responsive">
@@ -72,6 +73,7 @@
                                                     <td>{{ $department->department_name }}</td>
                                                     <td>{{ $department->description }}</td>
                                                     <td>
+                                                        @can('تعديل قسم')
                                                         <a class="btn btn-outline-success btn-sm
                                                         modal-effect btn btn-outline-primary"
                                                         data-effect="effect-flip-horizontal"
@@ -82,7 +84,8 @@
                                                         data-description="{{ $department->description }}">
                                                          <i class="las la-pen"></i>
                                                      </a>
-
+                                                        @endcan
+                                                        @can('حذف قسم')
                                                         <a class="btn btn-outline-danger btn-sm
                                                         modal-effect btn btn-outline-primary "
                                                         data-effect="effect-flip-horizontal"
@@ -93,11 +96,9 @@
                                                         >
                                                         <li class="las la-trash"></li>
                                                     </a>
-                                                    {{--     <form action="{{ route('departments.destroy', $department->id) }}" method="POST" style="display: inline-block;" >
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="submit" class="btn btn-outline-danger btn-sm">حذف</button>
-                                                        </form> --}}
+                                                        @endcan
+
+
                                                     </td>
                                                 </tr>
 
@@ -229,6 +230,7 @@
 		</div>
 		<!-- main-content closed -->
 @endsection
+@endcan
 @section('js')
 <!-- Internal Data tables -->
 <script src="{{URL::asset('assets/plugins/datatable/js/jquery.dataTables.min.js')}}"></script>

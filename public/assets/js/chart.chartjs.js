@@ -108,11 +108,23 @@ $(function() {
 		type: 'bar',
 		data: {
 			labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-			datasets: [{
-				label: '# of Votes',
-				data: [12, 39, 20, 10, 25, 18],
-				backgroundColor: gradient
-			}]
+		datasets: [
+	{
+		label: 'Paid Invoices',
+		data: [12, 39, 20, 10, 25, 18],
+		backgroundColor: '#28a745'
+	},
+	{
+		label: 'Unpaid Invoices',
+		data: [8, 20, 15, 6, 10, 9],
+		backgroundColor: '#dc3545'
+	},
+	{
+		label: 'Partially Paid',
+		data: [5, 12, 7, 3, 9, 4],
+		backgroundColor: '#ffc107'
+	}
+]
 		},
 		options: {
 			maintainAspectRatio: false,

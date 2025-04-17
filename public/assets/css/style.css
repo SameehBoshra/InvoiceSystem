@@ -10173,8 +10173,11 @@ a.close.disabled {
 /* ########## BOOTSTRAP OVERRIDES ########## */
 /* ############### PAGE LAYOUT STYLES ############### */
 /* ###### 6.3 Global  ###### */
-body {
-  font-family: "Roboto", sans-serif; }
+
+    body {
+        font-family: "Almarai", sans-serif;
+        font-weight: 700;
+        font-style: normal;}
 
 .main-body, .main-dashboard {
   min-height: 100vh;

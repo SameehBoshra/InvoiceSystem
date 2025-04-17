@@ -46,11 +46,15 @@
             </div>
             <div class="card-body">
                 <div>
+                    @can('اضافةفاتورة')
                     <a href="invoices/create" class="btn btn-primary">
                         <i class="fas fa-plus"></i> فاتورة جديدة
                     </a>
-                    <a class="modal-effect btn btn-sm btn-primary" href="{{ route('exportInvoices') }}"
+                    @endcan
+                    @can('تصدير الفواتير')
+                    <a  href="{{ route('exportInvoices') }}" class="btn btn-primary"
                     style="color:white"><i class="fas fa-file-download"></i>&nbsp;تصدير اكسيل</a>
+                    @endcan
                 </div>
                 <hr>
                 <div class="table-responsive">
@@ -109,13 +113,15 @@
                                         class="btn ripple btn-primary btn-sm" data-toggle="dropdown"
                                         type="button">العمليات<i class="fas fa-caret-down ml-1"></i></button>
                                     <div class="dropdown-menu tx-13">
+                                        @can('تعديل الفاتورة')
                                             <a class="dropdown-item"
                                                 href="{{ route('invoices.edit', $invoice->id )}}">
                                                 <i class="text-danger fas fa-pen-alt"></i>
                                                 &nbsp;&nbsp;
                                                 تعديل
                                                 الفاتورة</a>
-
+                                        @endcan
+                                        @can('حذف الفاتورة')
                                             <a class="dropdown-item"
                                             href="#modalDelete"
                                                 data-toggle="modal"
@@ -124,13 +130,15 @@
                                                 <i class="text-danger fas fa-trash-alt"></i>
                                                 &nbsp;&nbsp;حذف
                                                 الفاتورة</a>
-
+                                        @endcan
+                                            @can('تغير حالة الدفع')
                                             <a class="dropdown-item"
                                                 href="{{ URL::route('Status_show', $invoice->id) }}"><i
                                                     class=" text-success fas                                                                                                                                                                                                                                                                                                                                                                                                                                                      fa-money-bill"></i>&nbsp;&nbsp;تغير
                                                 حالة
                                                 الدفع</a>
-
+                                            @endcan
+                                            @can('ارشفة الفاتورة')
                                             <a class="dropdown-item"
                                              href="#modalDeleteArchive"
                                              data-id="{{ $invoice->id }}"
@@ -138,11 +146,13 @@
                                                 data-toggle="modal"><i
                                                     class="text-warning fas fa-exchange-alt"></i>&nbsp;&nbsp;نقل الي
                                                 الارشيف</a>
-
+                                            @endcan
+                                            @can('طباعة الفاتورة')
                                             <a class="dropdown-item" href="Print_invoice/{{ $invoice->id }}"><i
                                                     class="text-success fas fa-print"></i>&nbsp;&nbsp;طباعة
                                                 الفاتورة
                                             </a>
+                                            @endcan
                                     </div>
                                 </div>
 
@@ -198,9 +208,9 @@
                         </button>
                     </div>
 
-                    <form action="invoices/destory" method="POST">
+                    <form action="{{route('InvoiceArchive')}}" method="POST">
                        @csrf
-                       @method('DELETE')
+                          @method('DELETE')
 
                         <div class="modal-body">
                             <p>هل انت متأكد من عملية اﻷرشفة ؟</p><br>

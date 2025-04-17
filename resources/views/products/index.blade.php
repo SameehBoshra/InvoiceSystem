@@ -11,6 +11,9 @@
 <link href="{{URL::asset('assets/plugins/datatable/css/responsive.dataTables.min.css')}}" rel="stylesheet">
 <link href="{{URL::asset('assets/plugins/select2/css/select2.min.css')}}" rel="stylesheet">
 @endsection
+
+@can('عرض المنتجات')
+
 @section('page-header')
 				<!-- breadcrumb -->
 				<div class="breadcrumb-header justify-content-between">
@@ -48,6 +51,7 @@
                                     <i class="mdi mdi-dots-horizontal text-gray"></i>
                                 </div>
                             </div>
+                            @can('اضافة منتج')
                             <!-- Add product -->
                             <div class="col-sm-6 col-md-4 col-xl-3 mg-t-20">
                                 <a class="modal-effect btn btn-outline-primary btn-block"
@@ -55,6 +59,7 @@
                                  data-toggle="modal" href="#modaldemo8"
                                  >أضافة منتج جديد</a>
                             </div>
+                            @endcan
 
                             <div class="card-body">
                                 <div class="table-responsive">
@@ -78,6 +83,7 @@
                                                     <td>{{ $product->department->department_name }}</td>
                                                     <td>{{ $product->note }}</td>
                                                     <td>
+                                                        @can('تعديل منتج')
                                                         <a class="btn btn-outline-success btn-sm
                                                         modal-effect btn btn-outline-primary"
                                                         data-effect="effect-flip-horizontal"
@@ -90,7 +96,9 @@
                                                         >
                                                          <i class="las la-pen"></i>
                                                      </a>
+                                                        @endcan
 
+                                                        @can('حذف منتج')
                                                         <a class="btn btn-outline-danger btn-sm
                                                         modal-effect btn btn-outline-primary "
                                                         data-effect="effect-flip-horizontal"
@@ -101,11 +109,8 @@
                                                         >
                                                         <li class="las la-trash"></li>
                                                     </a>
-                                                    {{--     <form action="{{ route('departments.destroy', $department->id) }}" method="POST" style="display: inline-block;" >
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="submit" class="btn btn-outline-danger btn-sm">حذف</button>
-                                                        </form> --}}
+                                                    @endcan
+
                                                     </td>
                                                 </tr>
 
@@ -131,7 +136,7 @@
                         </h1><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
                         </div>
                         <div class="modal-body">
-                                <div class="card">
+                                         <div class="card">
                                     <div class="card-body">
                                         <form class="" action="{{route('products.store')}}" method="POST">
                                                   @csrf
@@ -252,6 +257,7 @@
 		</div>
 		<!-- main-content closed -->
 @endsection
+@endcan
 @section('js')
 <!-- Internal Data tables -->
 <script src="{{URL::asset('assets/plugins/datatable/js/jquery.dataTables.min.js')}}"></script>

@@ -24,11 +24,11 @@
 			<div class="container-fluid">
 				@yield('page-header')
 				@yield('content')
-				@include('layouts.sidebar')
-				@include('layouts.models')
-            	@include('layouts.footer')
+{{-- 				@include('layouts.sidebar')
+ --}}				@include('layouts.models')
 				@include('layouts.footer-scripts')
-
+{{--                 @include('layouts.footer')
+ --}}
             </div>
         </div>
         <!-- /main-content -->
@@ -43,6 +43,8 @@
 <!--Internal  Notify js -->
     <script src="{{ URL::asset('assets/plugins/notify/js/notifIt.js') }}"></script>
     <script src="{{ URL::asset('assets/plugins/notify/js/notifit-custom.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
         </script>
 	</body>
 </html>

@@ -1,7 +1,7 @@
 @extends('layouts.master2')
 
 @section('title')
-تسجيل الدخول - مورا سوفت للادارة القانونية
+تسجيل الدخول
 @stop
 
 
@@ -34,7 +34,7 @@
                                                  @csrf
 													<div class="form-group">
 													<label>البريد الالكتروني</label>
-                                                    <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                                                    <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}"  autocomplete="email" autofocus>
                                                      @error('email')
                                                      <span class="invalid-feedback" role="alert">
                                                      <strong>{{ $message }}</strong>

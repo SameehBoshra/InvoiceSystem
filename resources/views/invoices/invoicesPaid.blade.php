@@ -45,11 +45,14 @@
                 </div>
             </div>
             <div class="card-body">
+                @can('اضافةفاتورة')
                 <div>
                     <a href="invoices/create" class="btn btn-primary">
                         <i class="fas fa-plus"></i> فاتورة جديدة
                     </a>
+
                 </div>
+                @endcan
                 <hr>
                 <div class="table-responsive">
                     <table id="example1" class="table key-buttons text-md-nowrap">
@@ -107,13 +110,15 @@
                                         class="btn ripple btn-primary btn-sm" data-toggle="dropdown"
                                         type="button">العمليات<i class="fas fa-caret-down ml-1"></i></button>
                                     <div class="dropdown-menu tx-13">
+                                        @can('تعديل الفاتورة')
                                             <a class="dropdown-item"
                                                 href="{{ route('invoices.edit', $invoice->id )}}">
                                                 <i class="text-danger fas fa-pen-alt"></i>
                                                 &nbsp;&nbsp;
                                                 تعديل
                                                 الفاتورة</a>
-
+                                        @endcan
+                                        @can('حذف الفاتورة')
                                             <a class="dropdown-item"
                                             href="#modalDelete"
                                                 data-toggle="modal"
@@ -122,12 +127,16 @@
                                                 <i class="text-danger fas fa-trash-alt"></i>
                                                 &nbsp;&nbsp;حذف
                                                 الفاتورة</a>
+                                        @endcan
 
+                                        @can('تغير حالة الدفع')
                                             <a class="dropdown-item"
                                                 href="{{ URL::route('Status_show', $invoice->id) }}"><i
                                                     class=" text-success fas                                                                                                                                                                                                                                                                                                                                                                                                                                                      fa-money-bill"></i>&nbsp;&nbsp;تغير
                                                 حالة
                                                 الدفع</a>
+                                        @endcan
+                                        @can('ارشفة الفاتورة')
 
                                             <a class="dropdown-item"
                                              href="#modalDeleteArchive"
@@ -136,11 +145,14 @@
                                                 data-toggle="modal"><i
                                                     class="text-warning fas fa-exchange-alt"></i>&nbsp;&nbsp;نقل الي
                                                 الارشيف</a>
+                                        @endcan
 
+                                        @can('طباعة الفاتورة')
                                             <a class="dropdown-item" href="Print_invoice/{{ $invoice->id }}"><i
                                                     class="text-success fas fa-print"></i>&nbsp;&nbsp;طباعة
                                                 الفاتورة
                                             </a>
+                                        @endcan
                                     </div>
                                 </div>
 

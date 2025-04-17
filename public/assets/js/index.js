@@ -1,5 +1,5 @@
 $(function() {
-	
+
 	/* Dashboard content */
 	$('#compositeline').sparkline('html', {
 		lineColor: 'rgba(255, 255, 255, 0.6)',
@@ -61,9 +61,24 @@ $(function() {
 		height: 30,
 		disableTooltips: true
 	});
+    $('#compositeline5').sparkline('html', {
+		lineColor: 'rgba(255, 255, 255, 0.6)',
+		lineWidth: 2,
+		spotColor: false,
+		minSpotColor: false,
+		maxSpotColor: false,
+		highlightSpotColor: null,
+		highlightLineColor: null,
+		fillColor: 'rgba(255, 255, 255, 0.2)',
+		chartRangeMin: 0,
+		chartRangeMax: 20,
+		width: '100%',
+		height: 30,
+		disableTooltips: true
+	});
 	/* Dashboard content closed*/
-	
-	
+
+
 	/* Apexcharts (#bar) */
 	var optionsBar = {
 	  chart: {
@@ -110,8 +125,8 @@ $(function() {
 			  colors: ['transparent'],
 			},
 		  },
-		  
-		  
+
+
 	  }],
 	   series: [{
 		  name: 'Impressions',
@@ -150,10 +165,10 @@ $(function() {
 	  }
 	}
 	new ApexCharts(document.querySelector('#bar'), optionsBar).render();
-	
+
 	/* Apexcharts (#bar) closed */
-	
-	
+
+
 	/*--- Apex (#chart) ---*/
 	var options = {
 		chart: {
@@ -169,10 +184,10 @@ $(function() {
 		size: 120,
 		 imageWidth: 50,
               imageHeight: 50,
-			  
-		 track: {	
-		 strokeWidth: "80%",	
-		 background: '#ecf0fa',	
+
+		 track: {
+		 strokeWidth: "80%",
+		 background: '#ecf0fa',
 		},
 		 dropShadow: {
                 enabled: false,
@@ -188,8 +203,8 @@ $(function() {
 			color: undefined,
 			offsetY: 30,
 		  },
-		  hollow: {	
-			 size: "60%"	
+		  hollow: {
+			 size: "60%"
 			},
 		  value: {
 			offsetY: -10,
@@ -219,16 +234,16 @@ $(function() {
 	stroke: {
 	  dashArray: 4
 	},
-   series: [83],	
+   series: [83],
 		labels: [""]
 	};
 
 	var chart = new ApexCharts(document.querySelector("#chart"), options);
 	chart.render();
 	/*--- Apex (#chart)closed ---*/
-	
-	
-	
+
+
+
 	/*--- Apex (#spark1) ---*/
 	var spark1 = {
     chart: {
@@ -282,7 +297,7 @@ $(function() {
 	  }
 	}
 	/*--- Apex (#spark1) closed ---*/
-	
+
 	/*--- Apex (#spark2) ---*/
 	var spark2 = {
 	  chart: {
@@ -335,7 +350,7 @@ $(function() {
 	  }
 	}
 	/*--- Apex (#spark2) closed ---*/
-	
+
 	/*--- Apex (#spark3) ---*/
 	var spark3 = {
 	  chart: {
@@ -393,7 +408,7 @@ $(function() {
 	  }
 	}
 	/*--- Apex (#spark3) closed ---*/
-	
+
 	/*--- Apex (#spark4) ---*/
 
 	var spark4 = {
@@ -452,7 +467,7 @@ $(function() {
 	  }
 	}
 	/*--- Apex (#spark4) closed ---*/
-	
+
 	/*--- Apex (#spark5) ---*/
 	var spark5 = {
 	  chart: {
@@ -516,10 +531,10 @@ $(function() {
 	new ApexCharts(document.querySelector("#spark3"), spark3).render();
 	new ApexCharts(document.querySelector("#spark4"), spark4).render();
 	new ApexCharts(document.querySelector("#spark5"), spark5).render();
-	
+
 	/*--- Apex (#spark5) closed ---*/
-	
-	
+
+
 	/*--- Map ---*/
 	$('#vmap2').vectorMap({
 		map: 'usa_en',
@@ -542,5 +557,5 @@ $(function() {
 		hoverOpacity: .85
 	});
 	/*--- Map closed ---*/
-	
+
 });
